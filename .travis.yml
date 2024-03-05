@@ -8,7 +8,9 @@ jobs:
     - stage: "Test"
       script: npm test
     - stage: "Push to Docker"
+      language: shell
+      install: skip
       before_script:
-        - docker build -t qaxim/travisci-argocd:v1
+        - docker build -t qaxim/travisci-argocd:v1 .
         - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
       script: docker push qaxim/travisci-argocd:v1
