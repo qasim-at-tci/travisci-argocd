@@ -1,0 +1,14 @@
+os: linux
+dist: focal
+language: node_js
+node_js: lts/*
+
+jobs:
+  include:
+    - stage: "Test"
+      script: npm test
+    - stage: "Push to Docker"
+      before_script:
+        - docker build -t qaxim/travisci-argocd:v1
+        - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+      script: docker push qaxim/travisci-argocd:v1
